@@ -5,7 +5,6 @@ pipeline {
         registryCredential = 'DOCKER_HUB'
         dockerImage = ''
     }
-    agent any
     tools {
         maven 'MVN_version'
     }
