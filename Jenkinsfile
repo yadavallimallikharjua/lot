@@ -1,7 +1,5 @@
 pipeline {
     agent any
-    stages {
-        stage('scm') {pipeline {
     environment {
         registry = "9492453554/myimage3"
         registryCredential = 'DOCKER_HUB'
