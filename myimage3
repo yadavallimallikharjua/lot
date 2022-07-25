@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: myimage
-          image: 9492453554/myimage4:latest
+          image: 9492453554/myimage3:latest
           ports:
           - containerPort: 8080
