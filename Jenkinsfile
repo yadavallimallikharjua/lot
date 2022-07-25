@@ -1,6 +1,17 @@
 pipeline {
     agent any
     stages {
+        stage('scm') {pipeline {
+    environment {
+        registry = "9492453554/myimage3"
+        registryCredential = 'DOCKER_HUB'
+        dockerImage = ''
+    }
+    agent any
+    tools {
+        maven 'MVN_version'
+    }
+    stages {
         stage('scm') {
             steps {
                 git branch: 'master', url: 'https://github.com/yadavallimallikharjua/openmrs-core.git'
@@ -13,8 +24,26 @@ pipeline {
         }
         stage('Build image') {
             steps {
-                sh 'docker image build -t myimage:1.0 .'
+                script {
+                    dockerImage = docker.build registry 
+                }
             }
         }
-    }
+        stage('push our image') { 
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Deploy App') {
+            steps {
+                script {
+                kubernetesDeploy(configs: "myimage3.yaml", kubeconfigId: "k8_config")
+                }
+            }
+        }
+	}
 }
